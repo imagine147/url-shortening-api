@@ -29,7 +29,6 @@ export default function Shortening() {
       setError('Please add a link');
       return;
     }
-
     if (!isValidUrl(originalUrl)) {
       setError('Invalid URL');
       return;
@@ -41,18 +40,15 @@ export default function Shortening() {
     setCopiedUrl('');
 
     try {
-      const res = await fetch('https://cleanuri.com/api/v1/shorten', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ url: originalUrl }),
-      });
+      const res = await fetch(
+        `https://tinyurl.com/api-create.php?url=${encodeURIComponent(originalUrl)}`
+      );
+      if (!res.ok) throw new Error('Failed to shorten URL');
 
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      const short = await res.text(); // TinyURL returns plain text
+      setShortUrl(short);
 
-      setShortUrl(data.result_url);
-
-      const newEntry = { original: originalUrl, shortened: data.result_url };
+      const newEntry = { original: originalUrl, shortened: short };
       const updatedHistory = [newEntry, ...history].slice(0, 5);
       setHistory(updatedHistory);
       localStorage.setItem('shortenedLinks', JSON.stringify(updatedHistory));
@@ -75,16 +71,16 @@ export default function Shortening() {
   };
 
   return (
-    <div className="w-full px-6 md:px-0 relative -bottom-24 md:-bottom-17">
+    <div className="w-full px-6 md:px-0 relative -bottom-24 md:-bottom-64">
       {/* Input Form */}
-      <div className="bg-mobile bg-cover rounded-lg p-6 md:p-4 flex flex-col md:flex-row gap-4 md:gap-6 w-full md:w-10/12 mx-auto">
+      <div className="bg-mobile bg-cover rounded-lg p-6 md:p-10 flex flex-col md:flex-row gap-4 md:gap-6 w-full md:w-10/12 mx-auto">
         <div className="w-full md:w-[80%]">
           <input
             type="url"
             value={originalUrl}
             onChange={(e) => setOriginalUrl(e.target.value)}
             placeholder="Shorten a link here..."
-            className={`w-full py-3 rounded-lg focus:outline-none text-sm placeholder:bg-white  placeholder:text-[#9e9aa7] placeholder:rounded-md placeholder:px-4 placeholder:py-2 ${
+            className={`w-full py-3 rounded-lg focus:outline-none text-sm placeholder:bg-white  placeholder:text-[#9e9aa7] placeholder:rounded-md placeholder:px-4 placeholder:py-2  ${
               error
                 ? 'border-2 border-[#f46262] focus:ring-red-300'
                 : 'focus:ring-2 focus:ring-cyan-300'
@@ -95,47 +91,80 @@ export default function Shortening() {
           )}
         </div>
         <button
-          disabled={loading}
           onClick={shortenUrl}
-          className="bg-[#2acfcf] text-white text-sm w-full md:w-[25%] px-6 py-2 rounded-lg font-bold hover:opacity-70 transition disabled:opacity-50"
+          disabled={loading}
+          className="bg-[#2acfcf] text-white text-sm w-full md:w-[20%] px-6 py-2 rounded-lg font-bold hover:opacity-70 transition disabled:opacity-50"
         >
           {loading ? 'Shortening...' : 'Shorten It!'}
         </button>
       </div>
 
-      {/* Shortened Links */}
-      <div className="w-full md:w-10/12 mx-auto mt-6 flex flex-col gap-4">
-        {history.map((item, idx) => (
-          <div
-            key={idx}
-            className="bg-white flex flex-col md:flex-row items-start md:items-center justify-between px-4 py-3 rounded-lg shadow"
+      {/* Shortened URL Result */}
+      {shortUrl && (
+        <div className="w-full md:w-10/12 mx-auto mt-4 flex items-center gap-4 bg-blue-100 text-blue-900 px-4 py-2 rounded">
+          <a
+            href={shortUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline break-all"
           >
-            <p className="text-[#35323e] text-sm truncate w-full md:w-1/2">
-              {item.original}
-            </p>
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4 w-full md:w-auto mt-2 md:mt-0">
-              <a
-                href={item.shortened}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#2acfcf] text-sm break-all"
+            {shortUrl}
+          </a>
+          <button
+            onClick={() => copyToClipboard(shortUrl)}
+            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Copy
+          </button>
+          {copiedUrl && <span className="text-green-600">Copied!</span>}
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && (
+        <div className="w-full md:w-10/12 mx-auto mt-4 text-[#f46262] bg-red-100 px-4 py-2 rounded text-center">
+          Error: {error}
+        </div>
+      )}
+
+      {/* History of Shortened Links */}
+      {history.length > 0 && (
+        <div className="w-full md:w-10/12 mx-auto mt-6">
+          <h3 className="text-lg font-semibold mb-2 text-gray-800">History</h3>
+          <ul className="space-y-2">
+            {history.map((item, idx) => (
+              <li
+                key={idx}
+                className="bg-white px-4 py-3 rounded-lg shadow flex flex-col md:flex-row md:items-center md:justify-between gap-2"
               >
-                {item.shortened}
-              </a>
-              <button
-                onClick={() => copyToClipboard(item.shortened)}
-                className={`text-white px-4 py-2 text-sm rounded-md font-bold ${
-                  copiedUrl === item.shortened
-                    ? 'bg-[#3b3054]'
-                    : 'bg-[#2acfcf] hover:opacity-70'
-                }`}
-              >
-                {copiedUrl === item.shortened ? 'Copied!' : 'Copy'}
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+                <span className="text-[#35323e] text-sm truncate w-full md:w-1/2">
+                  {item.original}
+                </span>
+                <div className="flex items-center gap-4">
+                  <a
+                    href={item.shortened}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#2acfcf] text-sm break-all"
+                  >
+                    {item.shortened}
+                  </a>
+                  <button
+                    onClick={() => copyToClipboard(item.shortened)}
+                    className={`text-white px-4 py-2 text-sm rounded-md font-bold ${
+                      copiedUrl === item.shortened
+                        ? 'bg-[#3b3054]'
+                        : 'bg-[#2acfcf] hover:opacity-70'
+                    }`}
+                  >
+                    {copiedUrl === item.shortened ? 'Copied!' : 'Copy'}
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
