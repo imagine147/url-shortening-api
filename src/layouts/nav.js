@@ -1,9 +1,9 @@
-"use client";
+"use client"
 import { useState, useEffect, useRef } from 'react';
 import Image from "next/image"
 import logo from "../images/logo.svg"
-import { RxHamburgerMenu } from 'react-icons/rx';
-import { IoCloseOutline } from 'react-icons/io5';
+import { RxHamburgerMenu } from "react-icons/rx";
+import { IoClose } from "react-icons/io5";
 
 export default function NavBar() {
   const [activeLink, setActiveLink] = useState('');
@@ -47,7 +47,7 @@ export default function NavBar() {
         </div>
 
         <button className="absolute right-6 top-6 md:hidden cursor-pointer" onClick={openMenubar}>
-            {menuOpen ? ( <IoCloseOutline className="w-[32px] h-[32px]" /> ) : ( <RxHamburgerMenu className="w-[32px] h-[32px]" /> )}
+            {menuOpen ? ( <IoClose className="w-[32px] h-[32px]" /> ) : ( <RxHamburgerMenu className="w-[32px] h-[32px]" /> )}
         </button>
 
         {/* mobile-nav */}
