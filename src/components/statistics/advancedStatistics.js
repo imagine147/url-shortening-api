@@ -1,9 +1,11 @@
 import Image from "next/image"
 import { statistics } from "@/db"
+import Shortening from "../shorten/urlShortening"
 export default function AdvancedStatistics() {
   return (
-    <div className="w-full bg-gray-200 ">
-      <div className="container w-full md:w-10/12 mx-auto px-6 py-8 pt-[30rem]">
+    <div className="w-full bg-gray-200 relative ">
+      <div><Shortening/></div>
+      <div className="container w-full md:w-10/12 mx-auto px-6 py-8 pt-[35rem] md:pt-[30rem]">
       <div className="flex flex-col gap-4 text-center">
         <h2 className="text-[#35323e] text-3xl font-bold">Advanced statistics</h2>
         <p className="text-[#9e9aa7] text-sm tracking-tight leading-4">Track how your links are performing across the web with <br/> our advanced statistics dashboard.</p>

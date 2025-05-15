@@ -2,7 +2,7 @@ import Image from "next/image"
 import Work from "../../images/illustration-working.svg"
 export default function Hero() {
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white mb-26">
       <div className="container w-full md:w-10/12 mx-auto flex flex-col-reverse gap-6 md:flex-row justify-between p-6  md:pr-0">
         <div className="w-full flex flex-col gap-6 mt-8">
           <div className="text-sm text-center md:text-start space-y-4">
@@ -14,7 +14,9 @@ export default function Hero() {
         </div>
 
         
-          <div className="w-full "><Image className="object-cover" src={Work} alt="working-illustration"/></div>
+        <div className="">
+        <Image src={Work} alt="work-illustration" className="w-full" />
+      </div>
         
       </div>
     </div>
