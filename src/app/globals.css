@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+.bg-mobile {
+  background-image: url('/images/bg-shorten-mobile.svg');
+  background-size: cover;
+  background-position: center;
+  background-color: #3b3054;
+}
+
+.bg-boost {
+  background-image: url('/images/bg-boost-mobile.svg');
+  background-size: cover;
+  background-position: center;
+  background-color: #3b3054;
+}
+
+@media (min-width: 768px) {
+  .bg-mobile {
+    background-image: url('/images/bg-shorten-desktop.svg');
+  }
+  .bg-boost {
+    background-image: url('/images/bg-boost-desktop.svg');
+  }
+}
