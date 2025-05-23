@@ -76,10 +76,11 @@ export default function Shortening() {
       <div className="bg-mobile container  bg-cover rounded-lg p-6 md:p-8 flex flex-col md:flex-row gap-4 md:gap-6 w-full md:w-10/12 mx-auto">
         <div className="w-full md:w-[80%]">
           <input type="url"
+            id='url'
             value={originalUrl}
             onChange={(e) => setOriginalUrl(e.target.value)}
             placeholder="Shorten a link here..."
-            className={`relative w-full py-3 rounded-lg focus:outline-none text-sm placeholder:bg-white  placeholder:text-[#9e9aa7] placeholder:rounded-md placeholder:px-4 placeholder:py-3  ${ error ? 'border-2 border-[#f46262] focus:ring-red-300' : 'focus:ring-2 focus:ring-cyan-300'
+            className={`relative w-full py-3 rounded-lg bg-white px-4 focus:outline-none text-sm placeholder:bg-white  placeholder:text-[#9e9aa7] placeholder:rounded-md placeholder:px-4 placeholder:py-3  ${ error ? 'border-2 border-[#f46262] focus:ring-red-300' : 'focus:ring-2 focus:ring-cyan-300'
             }`}
           />
           {error && ( <p className="text-[#f46262] text-xs mt-1 italic">{error}</p>
@@ -87,7 +88,7 @@ export default function Shortening() {
         </div>
         <button onClick={shortenUrl}
           disabled={loading}
-          className="bg-[#2acfcf] text-white tracking-tight text-sm w-full md:w-[20%] px-4  py-3 rounded-lg font-bold hover:opacity-70 transition disabled:opacity-50">
+          className="bg-[#2acfcf] text-white tracking-tight text-sm w-full md:w-[20%] px-4  py-3 rounded-lg font-bold  hover:bg-cyan-300 transition cursor-pointer">
           {loading ? 'Shortening...' : 'Shorten It!'}
         </button>
       </div>
@@ -111,7 +112,7 @@ export default function Shortening() {
 
       {/* Error Message */}
       {error && (
-        <div className="w-full md:w-10/12 mx-auto mt-4 text-[#f46262] bg-red-100 px-4 py-2 rounded text-center">
+        <div className="w-full container md:w-10/12 mx-auto mt-4 text-[#f46262] bg-red-100 px-4 py-2 rounded text-center">
           Error: {error}
         </div>
       )}

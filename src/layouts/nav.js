@@ -54,14 +54,14 @@ export default function NavBar() {
         <div ref={navRef} className={`absolute top-full right-5 w-[90%] mx-auto bg-[#3b3054] rounded-lg shadow-lg md:hidden flex flex-col gap-4 z-50 transition-all ${menuOpen ? 'block' : 'hidden'}`}>
           <nav className="flex flex-col gap-8 text-[18px] p-8">
             <ul className="space-y-4 text-center text-white font-bold">
-              <li className="hover:text-[#35323e]">Features</li>
-              <li className="hover:text-[#35323e]">Pricing</li>
-              <li className="hover:text-[#35323e]">Resources</li>
+              <li>Features</li>
+              <li>Pricing</li>
+              <li>Resources</li>
             </ul>
             <div className="border-b-1 border-gray-600 "></div>
 
             <div className="space-y-4 text-center text-white font-bold">
-              <div className="hover:text-[#35323e]">Login</div>
+              <div>Login</div>
               <button className="w-full text-white font-bold rounded-3xl hover:opacity-50 bg-[#2acfcf] px-6 py-2 ">Sign Up</button>
             </div>
           </nav>
